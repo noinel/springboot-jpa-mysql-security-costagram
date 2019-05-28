@@ -284,13 +284,8 @@ input[type=button]{
 			</div>
 
 			<div class="small3">
-<<<<<<< HEAD
-				<a href="explore"><img src="/image/images/41.png" height="30px"></a>
 
-=======
 				<a href="/explore"><img src="/image/images/41.png" height="30px"></a>
-	
->>>>>>> 1329026029dfb36f5b1b97f66bf9af2c9e2e2e34
 				<div class="a5">
 					<a href="#"><img src="/image/images/42.png" height="30px"></a>
 				</div>
@@ -335,12 +330,10 @@ input[type=button]{
 							<c:set var="like_check" value="false" />
 
 							<c:forEach var="like" items="${image.likes}">
-<<<<<<< HEAD
-								<c:if test="${like.user.id eq user.id}">
 
-=======
+
 								<c:if test="${like.user.id eq user.id}">	
->>>>>>> 1329026029dfb36f5b1b97f66bf9af2c9e2e2e34
+
 									<c:set var="like_check" value="true" />
 								</c:if>
 							</c:forEach>

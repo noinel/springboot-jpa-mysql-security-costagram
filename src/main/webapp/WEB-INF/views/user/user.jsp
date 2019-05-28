@@ -586,20 +586,24 @@ input[type=submit] {
 			</div>
 			<div class="text">
 				<div class="rower">
-<<<<<<< HEAD
+
 					<div class="name">${imageUser.username}</div>
 					<c:choose>
-						<c:when test="${imageUser.id ne user.id}">
-=======
-					<div class="name">${user.username}</div>
-					<c:choose>
-						<c:when test="${id ne user.id}">
->>>>>>> 1329026029dfb36f5b1b97f66bf9af2c9e2e2e34
+						<c:when test="${imageUser.id ne user.id and followCheck eq false}">
+
 							<div>
 								<!-- Follow 유무 체크해야함. -->
 								<button class="value3image2">팔로우</button>
 							</div>
 						</c:when>
+						<c:when test="${imageUser.id ne user.id and followCheck eq true}">
+
+							<div>
+								<!-- Follow 유무 체크해야함. -->
+								<button class="value3image2">언팔로우</button>
+							</div>
+						</c:when>
+						
 						<c:otherwise>
 							<div>
 								<button class="value3image2">프로필편집</button>
@@ -625,13 +629,10 @@ input[type=submit] {
 					</div>
 				</div>
 				<div class="rower2">
-<<<<<<< HEAD
+
 					<div class="rower3">${imageUser.name }↟</div>
 					${imageUser.bio } <br /> <a href="${imageUser.website }">${imageUser.website }</a>
-=======
-					<div class="rower3">${user.name }↟</div>
-					${user.bio } <br /> <a href="${user.website }">${user.website }</a>
->>>>>>> 1329026029dfb36f5b1b97f66bf9af2c9e2e2e34
+
 				</div>
 			</div>
 		</div>

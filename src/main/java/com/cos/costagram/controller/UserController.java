@@ -87,11 +87,20 @@ public class UserController {
 		// 팔로워 카운트 followerCount
 		List<Follow> followers = followRepository.findByToUserId(imageUser.getId());
 		int followerCount = followers.size();
-
+		boolean followCheck= false;
+		for(Follow f: followers) {
+			if(f.getFromUser().getId() == user.getId()) {
+				followCheck=true;
+			}
+		}
+		
+//		int followCheck = followRepository.findByFromUserIdAndToUserId(user.getId(), id);
+		
 		model.addAttribute("user", user);
 		model.addAttribute("imageUser", imageUser);
 		model.addAttribute("imageList", imageList);
 		model.addAttribute("imageCount", imageCount);
+		model.addAttribute("followCheck", followCheck);
 		model.addAttribute("followCount", followCount);
 		model.addAttribute("followerCount", followerCount);
 
@@ -99,35 +108,7 @@ public class UserController {
 
 	}
 
-	@GetMapping("/user/{id}")
-	public String userDetail(@PathVariable int id, Model model, @AuthenticationPrincipal CustomUserDetails userDetail) {
-		Optional<User> userO = userRepository.findById(userDetail.getUser().getId());
-
-		// 유저정보(username, name, bio, website)
-		User user = userO.get();
-		// 이미지정보+좋아요카운트정보(User:Image), (User:Image.count())
-		List<Image> imageList = imageRepository.findByUserIdOrderByCreateDateDesc(id);
-		int imageCount = imageList.size();
-		for (Image i : imageList) {
-			List<Likes> likeList = likesRepository.findByImageId(i.getId());
-			i.setLikeCount(likeList.size());
-		}
-
-		// 팔로우정보(User:Follow:User.count())
-		List<Follow> followList = followRepository.findByFromUserId(id);
-		int followCount = followList.size();
-		// 팔로워정보(User:Follower:User.count())
-		List<Follow> followerList = followRepository.findByToUserId(id);
-		int followerCount = followerList.size();
-
-		model.addAttribute("user", user);
-		model.addAttribute("id", id);
-		model.addAttribute("imageList", imageList);
-		model.addAttribute("imageCount", imageCount);
-		model.addAttribute("followCount", followCount);
-		model.addAttribute("followerCount", followerCount);
-		return "/user/user";
-	}
+	
 
 	@GetMapping("/explore")
 	public String explore() {

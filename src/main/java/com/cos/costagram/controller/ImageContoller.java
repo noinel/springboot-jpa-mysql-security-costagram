@@ -133,12 +133,8 @@ public class ImageContoller {
 			image.getTags().add(tag); // DB에 영향을 미치지 않음.
 		}
 
-		try {
-			Thread.sleep((long) 2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		return "redirect:/user/" + user.getId();
+
+		return "redirect:/images/";
 	}
 
 	@GetMapping("/images/upload")
