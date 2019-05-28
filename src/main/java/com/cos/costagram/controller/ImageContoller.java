@@ -32,78 +32,72 @@ import com.cos.costagram.util.UtilCos;
 
 @Controller
 public class ImageContoller {
-	
+
 	@Autowired
 	private ImageRepository imageRepository;
-	
+
 	@Autowired
 	private TagRepository tagRepository;
-	
+
 	@Autowired
 	private FollowRepository followRepository;
-	
+
 	@GetMapping("/home")
 	public String home() {
 		return "home";
 	}
-	
+
 	@GetMapping("/images")
-	public String image(@AuthenticationPrincipal CustomUserDetails userDetail, Model model, @RequestParam(value="page", defaultValue = "1") int page, HttpServletRequest request) {
-		
-		//1. User (One)
+	public String image(@AuthenticationPrincipal CustomUserDetails userDetail, Model model,
+			@RequestParam(value = "page", defaultValue = "1") int page, HttpServletRequest request) {
+
+		// 1. User (One)
 		User user = userDetail.getUser();
-		System.out.println("user.getId() : " +user.getId());
-		
-		//HttpSession session = request.getSession();
-		//session.setAttribute("user", user);
-		//2. User:Follow (List)
+		System.out.println("user.getId() : " + user.getId());
+
+		// HttpSession session = request.getSession();
+		// session.setAttribute("user", user);
+		// 2. User:Follow (List)
 		List<Follow> followList = followRepository.findByFromUserId(user.getId());
 
-		//3. User:Follow:Image (List) 4. Follow:Image:Like(count) (One)
+		// 3. User:Follow:Image (List) 4. Follow:Image:Like(count) (One)
 		List<Image> imageList = new ArrayList<>();
 
-		for(Follow f : followList) {
+		for (Follow f : followList) {
 			List<Image> list = imageRepository.findByUserIdOrderByCreateDateDesc(f.getToUser().getId());
-			for(Image i : list) {
+			for (Image i : list) {
 				imageList.add(i);
-			}	
+			}
 		}
-		System.out.println("imageList Size : "+imageList.size());
-		//4. 페이징 처리
+		System.out.println("imageList Size : " + imageList.size());
+		// 4. 페이징 처리
 		int maxPage = 0;
-		int start = (page-1)*3;
-		int end = page*3;
-		int mod = imageList.size()%3; //0
-		if(mod == 0) {
-			maxPage = imageList.size()/3; //2
-		}else {
-			maxPage= imageList.size()/3 + 1;
-<<<<<<< HEAD
-			if(page==maxPage) {
-				end = start+mod;
+		int start = (page - 1) * 3;
+		int end = page * 3;
+		int mod = imageList.size() % 3; // 0
+		if (mod == 0) {
+			maxPage = imageList.size() / 3; // 2
+		} else {
+			maxPage = imageList.size() / 3 + 1;
+
+			if (page == maxPage) {
+				end = start + mod;
 			}
 		}
-		
-=======
-			if(page == maxPage) {
-				end = start+mod;
-			}
-		}
-	
->>>>>>> 1329026029dfb36f5b1b97f66bf9af2c9e2e2e34
-		for(Image i : imageList) {
+
+		for (Image i : imageList) {
 			System.out.println(i.getId());
 		}
 		System.out.println("=================");
-		
+
 		Collections.sort(imageList);
-		
-		for(Image i : imageList) {
+
+		for (Image i : imageList) {
 			System.out.println(i.getId());
 		}
-		imageList = imageList.subList(start, end); //0 3
-		
-		//5. Model에 담아주기
+		imageList = imageList.subList(start, end); // 0 3
+
+		// 5. Model에 담아주기
 		model.addAttribute("user", user);
 		model.addAttribute("imageList", imageList);
 		model.addAttribute("page", page);
@@ -111,53 +105,42 @@ public class ImageContoller {
 
 		return "/images/image";
 	}
-	
-@PostMapping("/images/uploadProc")
-public String imageUpload(
-		@AuthenticationPrincipal CustomUserDetails userDetail,
-		@RequestParam("file") MultipartFile file, 
-		String caption, 
-		String location, 
-		String tags) throws IOException {
-	
-	
-	UUID uuid = UUID.randomUUID();
-	String uuidFileName = uuid+"_"+file.getOriginalFilename();
-	Path filePath = Paths.get(UtilCos.getResourcePath()+uuidFileName);
-	System.out.println("filePath : "+filePath);
-	Files.write(filePath, file.getBytes());
-	User user = userDetail.getUser();
 
-	List<String> tagList = UtilCos.tagParser(tags);
-	
-	Image image = Image.builder()
-			.caption(caption)
-			.location(location)
-			.user(user)
-			.mimeType(file.getContentType())
-			.fileName(uuidFileName)
-			.filePath("/image/"+uuidFileName)
-			.build();
-	
-	imageRepository.save(image);
-	
-	for(String t : tagList) {
-		Tag tag = new Tag();
-		tag.setName(t);
-		tag.setImage(image);
-		tag.setUser(user);
-		tagRepository.save(tag);
-		image.getTags().add(tag); //DB에 영향을 미치지 않음.
+	@PostMapping("/images/uploadProc")
+	public String imageUpload(@AuthenticationPrincipal CustomUserDetails userDetail,
+			@RequestParam("file") MultipartFile file, String caption, String location, String tags) throws IOException {
+
+		UUID uuid = UUID.randomUUID();
+		String uuidFileName = uuid + "_" + file.getOriginalFilename();
+		Path filePath = Paths.get(UtilCos.getResourcePath() + uuidFileName);
+		System.out.println("filePath : " + filePath);
+		Files.write(filePath, file.getBytes());
+		User user = userDetail.getUser();
+
+		List<String> tagList = UtilCos.tagParser(tags);
+
+		Image image = Image.builder().caption(caption).location(location).user(user).mimeType(file.getContentType())
+				.fileName(uuidFileName).filePath("/image/" + uuidFileName).build();
+
+		imageRepository.save(image);
+
+		for (String t : tagList) {
+			Tag tag = new Tag();
+			tag.setName(t);
+			tag.setImage(image);
+			tag.setUser(user);
+			tagRepository.save(tag);
+			image.getTags().add(tag); // DB에 영향을 미치지 않음.
+		}
+
+		try {
+			Thread.sleep((long) 2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return "redirect:/user/" + user.getId();
 	}
-	
-	try {
-		Thread.sleep((long) 2000);
-	} catch (InterruptedException e) {
-		e.printStackTrace();
-	}
-	return "redirect:/user/"+user.getId();
-}
-	
+
 	@GetMapping("/images/upload")
 	public String imageUpload() {
 		return "/images/upload";
