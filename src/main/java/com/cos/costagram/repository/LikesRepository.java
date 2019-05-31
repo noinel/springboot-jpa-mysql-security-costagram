@@ -12,8 +12,7 @@ import com.cos.costagram.model.Likes;
 public interface LikesRepository extends JpaRepository<Likes, Integer>{
 	
 	public List<Likes> findByImageId(int imageId);
-	//커밋을 위해 적어주는 어노테이션 @Modifying, @Transactional
-	@Modifying
+
 	@Transactional
 	@Query(value="delete from likes where imageId = ?1 and userId = ?2", nativeQuery=true)
 	public void deleteLike(int imageId, int userId);

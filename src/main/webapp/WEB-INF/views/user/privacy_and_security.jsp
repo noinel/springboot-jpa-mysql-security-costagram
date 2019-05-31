@@ -8,7 +8,8 @@
 <meta charset="UTF-8">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet" />
-<title>demasia</title>
+<title>Instagram</title>
+<link rel="shortcut icon" href="/image/user/favicon.ico">
 <style>
 * {
 	margin: 0;

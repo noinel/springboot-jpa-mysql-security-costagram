@@ -6,7 +6,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Document</title>
+<title>Instagram</title>
+<link rel="shortcut icon" href="/image/user/favicon.ico">
 <link href="css/style.css" type="text/css" rel="stylesheet">
 <script src="js/jquery-1.12.3.js" type="text/javascript"></script>
 <style>
@@ -610,9 +611,11 @@ input[type=button]{
 				
 				let follow =document.createElement("div")
 				follow.classList.add("img");
-				follow.innerHTML = "<img src='/image/img.jpg' alt='white'><p>"+rs[g].toUser.username+"</p><a class='follow"+rs[g].toUser.id+"'><button  class='un' onclick='follow2("+rs[g].toUser.id+", false)'>언팔</button></a>";
-				follow_el.prepend(follow); 
-				
+				if(rs[g].doFollowing === true){
+				follow.innerHTML = "<img src='/image/img.jpg' alt='white'><p>"+rs[g].fromUser.username+"</p><a class='follow"+rs[g].fromUser.id+"'><button onclick='follow2("+rs[g].fromUser.id+", true)'>팔로우</button></a>";
+				}else{
+				follow.innerHTML = "<img src='/image/img.jpg' alt='white'><p>"+rs[g].toUser.username+"</p><a class='follow"+rs[g].toUser.id+"'><button  class='un' onclick='follow2("+rs[g].toUser.id+", false)'>언팔</button></a>";						
+				}
 				
 				}
 				

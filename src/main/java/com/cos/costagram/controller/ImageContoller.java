@@ -95,8 +95,9 @@ public class ImageContoller {
 		for (Image i : imageList) {
 			System.out.println(i.getId());
 		}
+		if(imageList.size() > 3) {
 		imageList = imageList.subList(start, end); // 0 3
-
+		}
 		// 5. Model에 담아주기
 		model.addAttribute("user", user);
 		model.addAttribute("imageList", imageList);

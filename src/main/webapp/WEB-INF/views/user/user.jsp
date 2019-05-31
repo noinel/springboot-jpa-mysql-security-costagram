@@ -6,10 +6,10 @@
 <head>
 <meta charset="UTF-8">
 <title>Instagram</title>
-
+<link rel="shortcut icon" href="/image/user/favicon.ico">
 <link href="/css/style.css" type="text/css" rel="stylesheet">
 <script src="/js/jquery-1.12.3.js" type="text/javascript"></script>
-<link rel="shortcut icon" href="/image/user/favicon.ico">
+
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet" />
 
@@ -339,7 +339,7 @@ p {
 .scorein {
 	font-size: 20px;
 	font-weight: 600;
-	color: white;
+	color: red;
 	margin: 15px;
 	display: inline;
 }
@@ -828,7 +828,20 @@ input[type=submit] {
 			}).then(function(rs){
 				if(rs === "ok"){
 					let follow_el = document.querySelector('.follow'+id);
-					follow_el.innerHTML = "<button class='un' onclick='follow2("+id+", false)'>언팔</button>";
+					for(let g in rs){
+						
+						
+						
+						let follow =document.createElement("div")
+						follow.classList.add("img");
+						if(rs[g].doFollowing === true){
+						follow.innerHTML = "<img src='/image/img.jpg' alt='white'><p>"+rs[g].fromUser.username+"</p><a class='follow"+rs[g].fromUser.id+"'><button onclick='follow2("+rs[g].fromUser.id+", true)'>팔로우</button></a>";
+						}else{
+						follow.innerHTML = "<img src='/image/img.jpg' alt='white'><p>"+rs[g].toUser.username+"</p><a class='follow"+rs[g].toUser.id+"'><button  class='un' onclick='follow2("+rs[g].toUser.id+", false)'>언팔</button></a>";						
+						}
+						follow_el.prepend(follow); 
+						
+						}
 				}
 			}
 					).catch();

@@ -6,7 +6,8 @@
 <head>
     <meta charset="UTF-8">
  
-    <title>article</title>
+<title>Instagram</title>
+<link rel="shortcut icon" href="/image/user/favicon.ico">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <style>
         
@@ -326,7 +327,7 @@
     <div class="article">
             <div class="text">둘러보기</div>
         <c:forEach var='image' items='${imageList}'>
-        <div class="articleimg1"><div class="imagetext1 image${image.user.id}">❤${image.likes.size()} 🗨1</div><img src="${image.filePath }" alt="" width="100%" height="100%"></div>
+        <div class="articleimg1"><a href="/user/${image.user.id}"><div class="imagetext1 image${image.user.id}">❤${image.likes.size()} 🗨1</div><img src="${image.filePath }" alt="" width="100%" height="100%"></div>
         </c:forEach>
         
       
