@@ -6,9 +6,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Instagram</title>
+
+<link href="/css/style.css" type="text/css" rel="stylesheet">
+<script src="/js/jquery-1.12.3.js" type="text/javascript"></script>
 <link rel="shortcut icon" href="/image/user/favicon.ico">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet" />
+
 <style>
 * {
 	margin: 0;
@@ -535,6 +539,9 @@ input[type=submit] {
 	width: 500px;
 	padding-top: 120px;
 }
+.un{
+	background-color: #ffffff;
+}
 </style>
 </head>
 
@@ -591,22 +598,22 @@ input[type=submit] {
 					<c:choose>
 						<c:when test="${imageUser.id ne user.id and followCheck eq false}">
 
-							<div>
+							<div class="followCheck">
 								<!-- Follow 유무 체크해야함. -->
-								<button class="value3image2">팔로우</button>
+								<button class="value3image2" onclick="follow(true)">팔로우</button>
 							</div>
 						</c:when>
 						<c:when test="${imageUser.id ne user.id and followCheck eq true}">
 
-							<div>
+							<div class="followCheck">
 								<!-- Follow 유무 체크해야함. -->
-								<button class="value3image2">언팔로우</button>
+								<button class="value3image2" onclick="follow(false)">언팔로우</button>
 							</div>
 						</c:when>
-						
+
 						<c:otherwise>
 							<div>
-								<button class="value3image2">프로필편집</button>
+								<button class="value3image2" onclick="location.href='/user/edit'">프로필편집</button>
 								<button class="value3image2"
 									onclick="location.href='/images/upload'">사진업로드</button>
 							</div>
@@ -619,14 +626,12 @@ input[type=submit] {
 						게시물
 						<p>${imageCount}</p>
 					</div>
-					<div>
-						팔로워
-						<p>${followerCount }</p>
-					</div>
-					<div>
-						팔로우
-						<p>${followCount }</p>
-					</div>
+					<a href="#" class="popup" onclick="followlist(false)"> 팔로워
+						<p>${followerCount}</p>
+
+					</a> <a href="#" class="popup" onclick="followlist(true)"> 팔로우
+						<p>${followCount}</p>
+					</a>
 				</div>
 				<div class="rower2">
 
@@ -649,25 +654,25 @@ input[type=submit] {
 
 		<div class="photo">
 
-<!-- photo item -->
-<div class="photo1">
-	<c:forEach var="item" items="${imageList}">
-		<div class="photobox">
-			<div class="score">
-				<div class="scorein">💖${item.likeCount}</div>
+			<!-- photo item -->
+			<div class="photo1">
+				<c:forEach var="item" items="${imageList}">
+					<div class="photobox">
+						<div class="score">
+							<div class="scorein">💖${item.likeCount}</div>
+						</div>
+						<img class="photoimage" src="${item.filePath}">
+					</div>
+				</c:forEach>
+				<c:if test="${imageCount mod 3 == 1}">
+					<div class="photobox"></div>
+					<div class="photobox"></div>
+				</c:if>
+				<c:if test="${imageCount mod 3 == 2}">
+					<div class="photobox"></div>
+				</c:if>
 			</div>
-			<img class="photoimage" src="${item.filePath}">
-		</div>
-	</c:forEach>
-	<c:if test="${imageCount mod 3 == 1}">
-		<div class="photobox"></div>
-		<div class="photobox"></div>
-	</c:if>
-	<c:if test="${imageCount mod 3 == 2}">
-		<div class="photobox"></div>
-	</c:if>
-</div>
-<!-- end photo item -->
+			<!-- end photo item -->
 
 		</div>
 
@@ -691,6 +696,163 @@ input[type=submit] {
 			<div class="copyright">ⓒ 2019 INSTAGRAM</div>
 		</div>
 	</footer> </main>
+	<div id="modal">
+		<div id="pop">
+		<div class="close">
+				<button type="button" id="btn-close">닫기</button>
+			</div>
+		</div>
+	</div>
+	<!-- Modal 끝 -->
+	<!-- wrap 끝 -->
+	
+	<script type="text/javascript">
+	function follow(check){
+		//true -> follow
+		//false -> unfollow
+		
+		if(check){
+			let url = '/follow/'+${imageUser.id};
+			fetch(url, {
+				method:"POST"
+			}).then(function(res){
+				console.log(res);
+				return res.text();
+			}).then(function(rs){
+				if(rs === "ok"){
+					let follow_el = document.querySelector('.followCheck');
+					follow_el.innerHTML = "<button class='value3image2' onclick='follow(false)' >언팔로우</button>";
+				}
+			}
+					).catch();
+			
+		}else{
+			let url = '/unfollow/'+${imageUser.id};
+			fetch(url, {
+				method:"POST"
+			}).then(function(res){
+				console.log(res);
+				return res.text();
+			}).then(function(rs){
+				if(rs === "ok"){
+					let follow_el = document.querySelector('.followCheck');
+					follow_el.innerHTML = "<button class='value3image2' onclick='follow(true)' >팔로우</button>";
+				}
+			}
+					).catch();
+		}
+	}
+	
+	
+	
+	
+	</script>
+	<script type="text/javascript">
+	function followlist(check){
+		
+		
+		$( '.img' ).remove()
+		
+		
+	
+		if(check){
+			let url = '/followlist/'+${imageUser.id};
+			fetch(url, {
+				method:"GET"
+			}).then(function(res){
+				console.log(res);
+				return res.json();
+			}).then(function(rs){
+				
+				
+				let follow_el = document.querySelector('#pop');
+				for(let g in rs){
+				
+				
+				
+				let follow =document.createElement("div")
+				follow.classList.add("img");
+				follow.innerHTML = "<img src='/image/img.jpg' alt='white'><p>"+rs[g].toUser.username+"</p><a class='follow"+rs[g].toUser.id+"'><button  class='un' onclick='follow2("+rs[g].toUser.id+", false)'>언팔</button></a>";
+				follow_el.prepend(follow); 
+				
+				
+				}
+				
+			}
+					).catch();
+			
+		}else{
+			let url = '/followerlist/'+${imageUser.id};
+			fetch(url, {
+				method:"GET"
+			}).then(function(res){
+				console.log(res);
+				return res.json();
+			}).then(function(rs){
+				
+				
+				let follow_el = document.querySelector('#pop');
+				for(let g in rs){
+					
+					
+					
+					let follow =document.createElement("div")
+					follow.classList.add("img");
+					if(rs[g].doFollowing === true){
+					follow.innerHTML = "<img src='/image/img.jpg' alt='white'><p>"+rs[g].fromUser.username+"</p><a class='follow"+rs[g].fromUser.id+"'><button onclick='follow2("+rs[g].fromUser.id+", true)'>팔로우</button></a>";
+					}else{
+					follow.innerHTML = "<img src='/image/img.jpg' alt='white'><p>"+rs[g].toUser.username+"</p><a class='follow"+rs[g].toUser.id+"'><button  class='un' onclick='follow2("+rs[g].toUser.id+", false)'>언팔</button></a>";						
+					}
+					follow_el.prepend(follow); 
+					
+					}
+				
+			}
+					).catch();
+		}
+		
+			
+		}
+	
+	function follow2(id,check){
+		//true -> follow
+		//false -> unfollow
+		
+		if(check){
+			let url = '/follow/'+id;
+			fetch(url, {
+				method:"POST"
+			}).then(function(res){
+				console.log(res);
+				return res.text();
+			}).then(function(rs){
+				if(rs === "ok"){
+					let follow_el = document.querySelector('.follow'+id);
+					follow_el.innerHTML = "<button class='un' onclick='follow2("+id+", false)'>언팔</button>";
+				}
+			}
+					).catch();
+			
+		}else{
+			let url = '/unfollow/'+id;
+			fetch(url, {
+				method:"POST"
+			}).then(function(res){
+				console.log(res);
+				return res.text();
+			}).then(function(rs){
+				if(rs === "ok"){
+					let follow_el = document.querySelector('.follow'+id);
+					follow_el.innerHTML = "<button onclick='follow2("+id+", true)'>팔로우</button>";
+				}
+			}
+					).catch();
+		}
+	}
+	
+	
+	</script>
+	<script src="/js/script.js" type="text/javascript"></script>
 
 </body>
 

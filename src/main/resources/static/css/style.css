@@ -27,9 +27,9 @@ button {
 
 
 .popup {
-	width: 40%;
-	height: 150px;
-	margin: 30% auto;
+	
+	
+	margin: 10% auto;
 	text-align: center;
 	cursor: pointer;
 }
@@ -107,6 +107,8 @@ img {
 	background: #009688;
 	color: #FFF;
 }
+
+
 
 
 

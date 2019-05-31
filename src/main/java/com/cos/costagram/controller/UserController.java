@@ -1,5 +1,6 @@
 package com.cos.costagram.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -111,7 +112,93 @@ public class UserController {
 	
 
 	@GetMapping("/explore")
-	public String explore() {
-		return "/user/explore";
+	public String explore(@AuthenticationPrincipal CustomUserDetails userDetail, Model model) {
+		
+		Optional<User> userO = userRepository.findById(userDetail.getUser().getId());
+		User user = userO.get();
+		List<Image> imageList = imageRepository.findExploreByUserId(user.getId());
+		model.addAttribute("user", user);
+		model.addAttribute("imageList", imageList);
+		
+		return "user/explore";
+	}
+	@GetMapping("/user/edit")
+	public String edit(@AuthenticationPrincipal CustomUserDetails userDetail, Model model) {
+		Optional<User> userO = userRepository.findById(userDetail.getUser().getId());
+		User user = userO.get();
+		model.addAttribute("user", user);
+		model.addAttribute("fail", "true");
+		return "/user/edit";
+	}
+	
+	@PostMapping("/user/editProc")
+	public String editProc(@AuthenticationPrincipal CustomUserDetails userDetail, User user, Model model) {
+		user.setUsername(userDetail.getUsername());
+		user.setPassword(userDetail.getPassword());
+		user.setCreateDate(userDetail.getUser().getCreateDate());
+		user.setUpdateDate(LocalDate.now());
+		user = userRepository.save(user);
+		model.addAttribute("user", user);
+		model.addAttribute("fail", "success");
+		return "/user/edit";
+	}
+	
+	
+	@GetMapping("/user/settings")
+	public String setting(@AuthenticationPrincipal CustomUserDetails userDetail, Model model) {
+		Optional<User> userO = userRepository.findById(userDetail.getUser().getId());
+		User user = userO.get();
+		model.addAttribute("user", user);
+		return "/user/settings";
+	}
+	@GetMapping("/user/change")
+	public String change(@AuthenticationPrincipal CustomUserDetails userDetail, Model model) {
+		Optional<User> userO = userRepository.findById(userDetail.getUser().getId());
+		User user = userO.get();
+		model.addAttribute("user", user);
+		model.addAttribute("fail", "true");
+		
+		return "/user/change";
+	}
+	@PostMapping("/user/changeProc")
+	public String changeProc(@AuthenticationPrincipal CustomUserDetails userDetail, String oldPassword, String newPassword, Model model) {
+		Optional<User> userO = userRepository.findById(userDetail.getUser().getId());
+		User user = userO.get();
+		if(passwordEncoder.matches(oldPassword, user.getPassword())) {
+		
+		newPassword =passwordEncoder.encode(newPassword);
+		
+		user.setUpdateDate(LocalDate.now());
+		user.setPassword(newPassword);
+		userRepository.save(user);
+		userDetail.getUser().setPassword(newPassword);
+		model.addAttribute("fail", "success");
+		}else {
+			model.addAttribute("fail", "false");
+		}
+		model.addAttribute("user", user);
+		return "/user/change";
+	}
+	@GetMapping("/user/contact_history")
+	public String contact_history(@AuthenticationPrincipal CustomUserDetails userDetail, Model model) {
+		Optional<User> userO = userRepository.findById(userDetail.getUser().getId());
+		User user = userO.get();
+		model.addAttribute("user", user);
+		return "/user/contact_history";
+	}
+	@GetMapping("/user/manage_access")
+	public String manage_access(@AuthenticationPrincipal CustomUserDetails userDetail, Model model) {
+		Optional<User> userO = userRepository.findById(userDetail.getUser().getId());
+		User user = userO.get();
+		model.addAttribute("user", user);
+		return "/user/manage_access";
+	}
+	@GetMapping("/user/privacy_and_security")
+	public String privacy_and_security(@AuthenticationPrincipal CustomUserDetails userDetail, Model model) {
+		Optional<User> userO = userRepository.findById(userDetail.getUser().getId());
+		User user = userO.get();
+		model.addAttribute("user", user);
+		
+		return "/user/privacy_and_security";
 	}
 }

@@ -20,7 +20,7 @@
             text-align: center;
         }
         nav{
-            margin-top:10%;
+            margin-top:8%;
             display: inline-block;
             text-align: center;
             width: 1000px;
@@ -88,9 +88,9 @@
         }
 
         .foot{
-            margin:400px;
+            margin:100px;
             display: grid;
-            grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto;
+            grid-template-columns: repeat(12, auto);
             
         }
       
@@ -145,7 +145,7 @@
             width: 100%;
             height: 100px;
             display: grid;
-            grid-template-columns: auto auto;
+            grid-template-columns: 1fr 2fr;
             background-color: rgb(255, 255, 255);
             position: fixed;
             z-index: 1;
@@ -177,13 +177,28 @@
 
         .moonjjin {
             display: grid;
-            grid-template-columns: auto auto;
-            justify-content: space-between;
+            grid-template-columns: repeat(4, auto);
+            /* justify-content: space-between; */
             
         }
         .info{
+        	display: grid;
             grid-column: 3/1 span;
-            justify-content: left;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, auto);
+            justify-content: center;
+        }
+        .info >a{
+        	grid-row: 2/1 span;
+        }
+        .info1{
+        	grid-column: 1/1 span;
+        }
+        .info2{
+        	grid-column: 2/1 span;
+        }
+        .info3{
+        	grid-column: 3/1 span;
         }
 
         .search {
@@ -250,9 +265,9 @@
         <header>
                 <div class="container">
                     <div class="rogo">
-                        <a href="#"><img src="/image/explore/camera.png" alt=""></a>&nbsp;&nbsp;
-                        <a href="#"><img src="/image/explore/bar.png" alt="" id="bar"></a>&nbsp;&nbsp;
-                        <a href="#"><img src="/image/explore/instagram.png" alt=""></a>
+                        <a href="/images"><img src="/image/explore/camera.png" alt=""></a>&nbsp;&nbsp;
+                        <a href="/images"><img src="/image/explore/bar.png" alt="" id="bar"></a>&nbsp;&nbsp;
+                        <a href="/images"><img src="/image/explore/instagram.png" alt=""></a>
                     </div>
                     <div class="moonjjin">
                         <div class="search">
@@ -261,19 +276,16 @@
                         </div>
                         
                         <div class="info">
-                            <a href="#"><img src="/image/explore/nachimpan.png" alt=""></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <a href="#"><img src="/image/explore/heart.png" alt=""></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <a href="#"><img src="/image/explore/people.png" alt="" id="aa"></a>
+                            <a class="info1" href="/explore"><img src="/image/explore/nachimpan.png" alt=""></a>
+                            <a class="info2" href="#"><img src="/image/explore/heart.png" alt=""></a>
+                            <a class="info3" href="/user/${user.id}"><img src="/image/explore/people.png" alt="" id="aa"></a>
                         </div>
                     </div>
                 </div>
             </header>
         
         <nav class="mid">
-                <div class="a">
-                    <p>팔로우할 만한 계정 둘러보기</p>
-                    <div><a href="#">모두보기</a></div>
-                </div>
+             
                 <div class="b">
                     <p>회원님을 위한 추천</p>
                     <div><a href="#">모두 보기</a></div>
@@ -313,24 +325,10 @@
             </nav>
     <div class="article">
             <div class="text">둘러보기</div>
-        <div class="articleimg1"><div class="imagetext1">❤1🗨1</div><img src="/image/explore/1.jpg" alt="" width="100%" height="100%"></div>
-        <div class="articleimg1"><div class="imagetext1">❤1🗨2</div><img src="/image/explore/2.jpg" alt="" width="100%" height="100%"></div>
-        <div class="articleimg1"><div class="imagetext1">❤1🗨3</div><img src="/image/explore/3.jpg" alt="" width="100%" height="100%"></div>
-        <div class="articleimg1"><div class="imagetext1">❤1🗨4</div><img src="/image/explore/4.jpg" alt="" width="100%" height="100%"></div>
-        <div class="articleimg1"><div class="imagetext1">❤1🗨5</div><img src="/image/explore/5.jpg" alt="" width="100%" height="100%"></div>
-        <div class="articleimg1"><div class="imagetext1">❤1🗨6</div><img src="/image/explore/6.jpg" alt="" width="100%" height="100%"></div>
-        <div class="articleimg1"><div class="imagetext1">❤1🗨7</div><img src="/image/explore/7.jpg" alt="" width="100%" height="100%"></div>
-        <div class="articleimg1"><div class="imagetext1">❤1🗨8</div><img src="/image/explore/8.jpg" alt="" width="100%" height="100%"></div>
-        <div class="articleimg1"><div class="imagetext1">❤1🗨9</div><img src="/image/explore/AppStore.jpg" alt="" width="100%" height="100%"></div>
-        <div class="articleimg1"><div class="imagetext1">❤1🗨10</div><img src="/image/explore/Microsoft.jpg" alt="" width="100%" height="100%"></div>
-        <div class="articleimg1"><div class="imagetext1">❤1🗨11</div><img src="/image/explore/common.jpg" alt="" width="100%" height="100%"></div>
-        <div class="articleimg1"><div class="imagetext1">❤1🗨12</div><img src="/image/explore/dal.jpg" alt="" width="100%" height="100%"></div>
-        <div class="articleimg1"><div class="imagetext1">❤1🗨13</div><img src="/image/explore/twice.png" alt="" width="100%" height="100%"></div>
-        <div class="articleimg1"><div class="imagetext1">❤1🗨14</div><img src="/image/explore/google.jpg" alt="" width="100%" height="100%"></div>
-        <div class="articleimg1"><div class="imagetext1">❤1🗨15</div><img src="/image/explore/sonoma.jpg" alt="" width="100%" height="100%"></div>
-        <div class="articleimg1"><div class="imagetext1">❤1🗨16</div><img src="/image/explore/san-francisco.jpg" alt="" width="100%" height="100%"></div>
-        <div class="articleimg1"><div class="imagetext1">❤1🗨17</div><img src="/image/explore/san-francisco-2.jpg" alt="" width="100%" height="100%"></div>
-        <div class="articleimg1"><div class="imagetext1">❤1🗨18</div><img src="/image/explore/new-york.jpg" alt="" width="100%" height="100%"></div>
+        <c:forEach var='image' items='${imageList}'>
+        <div class="articleimg1"><div class="imagetext1 image${image.user.id}">❤${image.likes.size()} 🗨1</div><img src="${image.filePath }" alt="" width="100%" height="100%"></div>
+        </c:forEach>
+        
       
     </div>
     <div class = "foot">
@@ -346,7 +344,6 @@
             <a href="#" class="href">해시 태그</a>
             <a href="#" class="href">언어</a>
             <a href="#" class="href3">@ 2019 INSTAGRAM</a>
-</div>
 </div>
 
 </body>

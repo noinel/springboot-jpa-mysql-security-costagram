@@ -237,16 +237,7 @@ input:focus {
 	text-decoration: none;
 	color: #003569;
 }
-<<<<<<< HEAD
 
-input[type=button] {
-	height: 31.3px;
-	width: 600px;
-	background-color: #3897F0;
-	border-radius: 5px;
-	border: 0px;
-	color: white;
-=======
 input[type=button]{
     height: 31.3px;
     width: 600px;
@@ -254,7 +245,7 @@ input[type=button]{
     border-radius: 5px;
     border: 0px;
     color: white;
->>>>>>> 1329026029dfb36f5b1b97f66bf9af2c9e2e2e34
+
 }
 .like_people {
 	display: inline-block;
@@ -405,7 +396,7 @@ input[type=button]{
 			<div class="small2-1">
 
 				<div>
-					<a href="#" class="popup"><img src="/image/images/61.png"
+					<a href="#" class="popup" onclick="followlist(true)"><img src="/image/images/61.png"
 						alt="x" width="50px" height="50px" /></a>
 				</div>
 				<div class="ax">
@@ -425,7 +416,7 @@ input[type=button]{
 					</div>
 
 					<div class="ax5">
-						<span class="bx1"><a class="bx2" href="#">sung-ju</a></span>
+						<span class="bx1"><a class="bx2" href="#">white</a></span>
 					</div>
 
 					<div class="ax4">
@@ -434,7 +425,7 @@ input[type=button]{
 					</div>
 
 					<div class="ax5">
-						<span class="bx1"><a class="bx2" href="#">sung-ju</a></span>
+						<span class="bx1"><a class="bx2" href="#">white</a></span>
 					</div>
 
 					<div class="ax4">
@@ -443,7 +434,7 @@ input[type=button]{
 					</div>
 
 					<div class="ax5">
-						<span class="bx1"><a class="bx2" href="#">sung-ju</a></span>
+						<span class="bx1"><a class="bx2" href="#">white</a></span>
 					</div>
 
 					<div class="ax4">
@@ -452,7 +443,7 @@ input[type=button]{
 					</div>
 
 					<div class="ax5">
-						<span class="bx1"><a class="bx2" href="#">sung-ju</a></span>
+						<span class="bx1"><a class="bx2" href="#">white</a></span>
 					</div>
 
 				</div>
@@ -469,7 +460,7 @@ input[type=button]{
 					</div>
 
 					<div class="ax5">
-						<span class="bx1"><a class="bx2" href="#">sung-ju</a></span>
+						<span class="bx1"><a class="bx2" href="#">white</a></span>
 					</div>
 
 					<div class="ax4">
@@ -478,7 +469,7 @@ input[type=button]{
 					</div>
 
 					<div class="ax5">
-						<span class="bx1"><a class="bx2" href="#">sung-ju</a></span>
+						<span class="bx1"><a class="bx2" href="#">white</a></span>
 					</div>
 
 					<div class="ax4">
@@ -487,7 +478,7 @@ input[type=button]{
 					</div>
 
 					<div class="ax5">
-						<span class="bx1"><a class="bx2" href="#">sung-ju</a></span>
+						<span class="bx1"><a class="bx2" href="#">white</a></span>
 					</div>
 
 					<div class="ax4">
@@ -496,7 +487,7 @@ input[type=button]{
 					</div>
 
 					<div class="ax5">
-						<span class="bx1"><a class="bx2" href="#">sung-ju</a></span>
+						<span class="bx1"><a class="bx2" href="#">white</a></span>
 					</div>
 
 				</div>
@@ -525,50 +516,14 @@ input[type=button]{
 	<!-- Modal 시작 -->
 	<div id="modal">
 		<div id="pop">
-			<div class="img">
-				<img src="image/img.jpg" alt="최주호사진">
-				<p>최주호</p>
-				<button>팔로우</button>
-				<span>X</span>
-			</div>
-			<div class="img">
-				<img src="image/img.jpg" alt="최주호사진">
-				<p>최주호</p>
-				<button>팔로우</button>
-				<span>X</span>
-			</div>
-			<div class="img">
-				<img src="image/img.jpg" alt="최주호사진">
-				<p>최주호</p>
-				<button>팔로우</button>
-				<span>X</span>
-			</div>
-			<div class="img">
-				<img src="image/img.jpg" alt="최주호사진">
-				<p>최주호</p>
-				<button>팔로우</button>
-				<span>X</span>
-			</div>
-			<div class="img">
-				<img src="image/img.jpg" alt="최주호사진">
-				<p>최주호</p>
-				<button>팔로우</button>
-				<span>X</span>
-			</div>
-			<div class="img">
-				<img src="image/img.jpg" alt="최주호사진">
-				<p>최주호</p>
-				<button>팔로우</button>
-				<span>X</span>
-			</div>
-			<div class="close">
+		<div class="close">
 				<button type="button" id="btn-close">닫기</button>
 			</div>
 		</div>
 	</div>
 	<!-- Modal 끝 -->
 	<!-- wrap 끝 -->
-	<script src="js/script.js" type="text/javascript"></script>
+	<script src="/js/script.js" type="text/javascript"></script>
 
 	<script>
 		function paging(){
@@ -625,7 +580,117 @@ input[type=button]{
 				});
 			}
 		}
+		
+	
+	
+	
 	</script>
+	<script type="text/javascript">
+	function followlist(check){
+		
+		
+		$( '.img' ).remove()
+		
+		
+	
+		if(check){
+			let url = '/followlist/'+${user.id};
+			fetch(url, {
+				method:"GET"
+			}).then(function(res){
+				console.log(res);
+				return res.json();
+			}).then(function(rs){
+				
+				
+				let follow_el = document.querySelector('#pop');
+				for(let g in rs){
+				
+				
+				
+				let follow =document.createElement("div")
+				follow.classList.add("img");
+				follow.innerHTML = "<img src='/image/img.jpg' alt='white'><p>"+rs[g].toUser.username+"</p><a class='follow"+rs[g].toUser.id+"'><button  class='un' onclick='follow2("+rs[g].toUser.id+", false)'>언팔</button></a>";
+				follow_el.prepend(follow); 
+				
+				
+				}
+				
+			}
+					).catch();
+			
+		}else{
+			let url = '/followerlist/'+${user.id};
+			fetch(url, {
+				method:"GET"
+			}).then(function(res){
+				console.log(res);
+				return res.json();
+			}).then(function(rs){
+				
+				
+				let follow_el = document.querySelector('#pop');
+				for(let g in rs){
+					
+					
+					
+					let follow =document.createElement("div")
+					follow.classList.add("img");
+					if(rs[g].doFollowing === true){
+					follow.innerHTML = "<img src='/image/img.jpg' alt='white'><p>"+rs[g].fromUser.username+"</p><a class='follow"+rs[g].fromUser.id+"'><button onclick='follow2("+rs[g].fromUser.id+", true)'>팔로우</button></a>";
+					}else{
+					follow.innerHTML = "<img src='/image/img.jpg' alt='white'><p>"+rs[g].toUser.username+"</p><a class='follow"+rs[g].toUser.id+"'><button  class='un' onclick='follow2("+rs[g].toUser.id+", false)'>언팔</button></a>";						
+					}
+					follow_el.prepend(follow); 
+					
+					}
+				
+			}
+					).catch();
+		}
+		
+			
+		}
+	
+	function follow2(id,check){
+		//true -> follow
+		//false -> unfollow
+		
+		if(check){
+			let url = '/follow/'+id;
+			fetch(url, {
+				method:"POST"
+			}).then(function(res){
+				console.log(res);
+				return res.text();
+			}).then(function(rs){
+				if(rs === "ok"){
+					let follow_el = document.querySelector('.follow'+id);
+					follow_el.innerHTML = "<button class='un' onclick='follow2("+id+", false)'>언팔</button>";
+				}
+			}
+					).catch();
+			
+		}else{
+			let url = '/unfollow/'+id;
+			fetch(url, {
+				method:"POST"
+			}).then(function(res){
+				console.log(res);
+				return res.text();
+			}).then(function(rs){
+				if(rs === "ok"){
+					let follow_el = document.querySelector('.follow'+id);
+					follow_el.innerHTML = "<button onclick='follow2("+id+", true)'>팔로우</button>";
+				}
+			}
+					).catch();
+		}
+	}
+	
+	
+	</script>
+	<script src="/js/script.js" type="text/javascript"></script>
 
 </body>
 

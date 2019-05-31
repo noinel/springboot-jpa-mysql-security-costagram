@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cos.costagram.model.Follow;
 
@@ -19,4 +20,8 @@ public interface FollowRepository extends JpaRepository<Follow, Integer>{
 	
 	@Query(value="SELECT COUNT(*) FROM FOLLOW WHERE fromUser = ?1 and toUser = ?2", nativeQuery = true)
 	public int findByFromUserIdAndToUserId(int fromUserId, int toUserId);
+	
+	
+	@Transactional
+	public void deleteByFromUserIdAndToUserId(int fromUser, int toUser);
 }
