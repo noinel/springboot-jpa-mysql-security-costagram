@@ -539,7 +539,8 @@ input[type=submit] {
 	width: 500px;
 	padding-top: 120px;
 }
-.un{
+
+.un {
 	background-color: #ffffff;
 }
 </style>
@@ -613,7 +614,8 @@ input[type=submit] {
 
 						<c:otherwise>
 							<div>
-								<button class="value3image2" onclick="location.href='/user/edit'">프로필편집</button>
+								<button class="value3image2"
+									onclick="location.href='/user/edit'">프로필편집</button>
 								<button class="value3image2"
 									onclick="location.href='/images/upload'">사진업로드</button>
 							</div>
@@ -698,14 +700,14 @@ input[type=submit] {
 	</footer> </main>
 	<div id="modal">
 		<div id="pop">
-		<div class="close">
+			<div class="close">
 				<button type="button" id="btn-close">닫기</button>
 			</div>
 		</div>
 	</div>
 	<!-- Modal 끝 -->
 	<!-- wrap 끝 -->
-	
+
 	<script type="text/javascript">
 	function follow(check){
 		//true -> follow
@@ -747,6 +749,7 @@ input[type=submit] {
 	
 	
 	</script>
+
 	<script type="text/javascript">
 	function followlist(check){
 		
@@ -756,7 +759,7 @@ input[type=submit] {
 		
 	
 		if(check){
-			let url = '/followlist/'+${imageUser.id};
+			let url = '/followlist/'+${user.id};
 			fetch(url, {
 				method:"GET"
 			}).then(function(res){
@@ -782,7 +785,7 @@ input[type=submit] {
 					).catch();
 			
 		}else{
-			let url = '/followerlist/'+${imageUser.id};
+			let url = '/followerlist/'+${user.id};
 			fetch(url, {
 				method:"GET"
 			}).then(function(res){
@@ -828,20 +831,7 @@ input[type=submit] {
 			}).then(function(rs){
 				if(rs === "ok"){
 					let follow_el = document.querySelector('.follow'+id);
-					for(let g in rs){
-						
-						
-						
-						let follow =document.createElement("div")
-						follow.classList.add("img");
-						if(rs[g].doFollowing === true){
-						follow.innerHTML = "<img src='/image/img.jpg' alt='white'><p>"+rs[g].fromUser.username+"</p><a class='follow"+rs[g].fromUser.id+"'><button onclick='follow2("+rs[g].fromUser.id+", true)'>팔로우</button></a>";
-						}else{
-						follow.innerHTML = "<img src='/image/img.jpg' alt='white'><p>"+rs[g].toUser.username+"</p><a class='follow"+rs[g].toUser.id+"'><button  class='un' onclick='follow2("+rs[g].toUser.id+", false)'>언팔</button></a>";						
-						}
-						follow_el.prepend(follow); 
-						
-						}
+					follow_el.innerHTML = "<button class='un' onclick='follow2("+id+", false)'>언팔</button>";
 				}
 			}
 					).catch();

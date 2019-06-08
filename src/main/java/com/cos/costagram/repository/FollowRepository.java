@@ -18,6 +18,7 @@ public interface FollowRepository extends JpaRepository<Follow, Integer>{
 
 	public List<Follow> findByToUserId(int toUser);
 	
+
 	@Query(value="SELECT COUNT(*) FROM FOLLOW WHERE fromUser = ?1 and toUser = ?2", nativeQuery = true)
 	public int findByFromUserIdAndToUserId(int fromUserId, int toUserId);
 	
