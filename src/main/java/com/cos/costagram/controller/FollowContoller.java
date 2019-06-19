@@ -72,7 +72,7 @@ public class FollowContoller {
 		List<Follow> followerlist=followRepository.findByToUserId(id);
 		for(Follow f: followerlist) {
 			boolean doFollowing =false;
-			int point=followRepository.findByFromUserIdAndToUserId(id, f.getId());
+			int point=followRepository.findByFromUserIdAndToUserId(id, f.getFromUser().getId());
 			if(point == 0) {
 				doFollowing= true;
 			}

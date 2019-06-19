@@ -92,6 +92,11 @@ img {
 	border-radius: 5px;
 	border: 0px;
 }
+.un{
+	background-color: #ffffff !important; 
+	color: #3c88de !important; 
+	border: 1px #3c88de solid !important;
+}
 .img span {
 	cursor: pointer;
 	padding: 0 10px;

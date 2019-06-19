@@ -210,25 +210,109 @@ input[type=submit] {
 	border: 0px;
 	border-radius: 3px;
 }
+        .big {
+	display: grid;
+	background-color: white; 
+	justify-content: center;
+	border-bottom: 1px solid #999;
+}
+.small {
+	display: grid;
+	grid-template-columns: auto 1fr 1fr;
+	/* background-color: beige; */
+	height: 60px;
+	grid-gap: 215px;
+	margin-top: 28px;
+}
+.a1 {
+	margin-top: 5px;
+}
+.a2 {
+	width: 200px;
+	height: 30px;
+}
+.small1 {
+	display: grid;
+	grid-template-columns: auto auto auto;
+}
+.line {
+	background-color: black;
+	height: 25px;
+	margin-top: 7px;
+	width: 1px;
+	margin-left: 15px;
+	margin-right: 10px;
+	/* margin: -35px 43px;  */
+}
+.small3 {
+	display: grid;
+	grid-template-columns: auto auto auto;
+	margin-left: 55px;
+	margin-top: 5px;
+}
+.a3 {
+	width: 100%;
+	margin-top: 10px;
+}
+.a5 {
+	margin-left: 10px;
+}
+input:focus {
+	outline: none;
+}
+.btn2{
+		margin-top: 10px;
+        height: 31.3px;
+        width: 68.02px;
+        background-color: #3897F0;
+        border-radius: 5px;
+        border: 0px;
+        color: white;
+        text-align: center;
+        line-height: 31.3px;
+}
 </style>
 </head>
 
 <body onLoad="check()">
-	<header>
-		<div>
-			<img src="/image/media/icon-1562139_960_720.png" alt="x">
-			<hr />
-			<img src="/image/media/insta.png" alt="X">
+	<div class="big">
+		<div class="small">
+			<div class="small1">
+				<div class="a0">
+					<a href="/images"><img src="/image/images/40.png" width="30px"
+						height="35px"></a>
+				</div>
+				<div class="line"></div>
+				<div class="a1">
+					<a href="/images"><img src="/image/images/logo.png"
+						width="100px" height="30px"></a>
+				</div>
+			</div>
+			<div class="small2">
+				<div class="a3">
+					<div>
+					
+					<input class="a2 searchbox" type="text"
+						placeholder="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;검색">
+					<button class="btn2" onclick='search()'>검색</button>
+					</div>	
+				</div>
+			</div>
+
+			<div class="small3">
+
+				<a href="/explore"><img src="/image/images/41.png" height="30px"></a>
+				<div class="a5">
+					<a href="#"><img src="/image/images/42.png" height="30px"></a>
+				</div>
+
+				<div class="a5">
+					<a href="/user/${user.id}"><img src="/image/images/43.png" height="30px"></a>
+				</div>
+			</div>
 		</div>
-		<div class="search">
-			<input type="text" placeholder="검색" /> <i class="material-icons">search</i>
-		</div>
-		<nav>
-			<a href="/explore"><img src="/image/media/circle.jpg" alt=""></a>
-			<a href="#"><img src="/image/media/heart.jpg" alt=""></a> <a
-				href="/user/${user.id}"><img src="/image/media/man.jpg" alt=""></a>
-		</nav>
-	</header>
+
+	</div>
 	<main>
 
 	<div class="main1">
@@ -361,6 +445,16 @@ function check(){
 	}
 }
 
+
+</script>
+<script type="text/javascript">
+function search(){
+	let search_dom = document.querySelector('.searchbox');
+	let search_value =search_dom.value;
+	if(search_value != null){
+		location.href="/images?search="+search_value;	
+	}	
+}
 </script>
 </body>
 

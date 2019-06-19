@@ -194,8 +194,9 @@ body {
 	height: 150px;
 	border: 1px solid;
 	border-radius: 50%;
-	background-image: url("/image/user/profile.jpg");
-}
+	background-image: url("${imageUser.profile.filePath}");
+	background-size: cover;
+}	
 
 p {
 	display: inline-block;
@@ -540,50 +541,120 @@ input[type=submit] {
 	padding-top: 120px;
 }
 
-.un {
-	background-color: #ffffff;
+
+.big {
+	display: grid;
+	background-color: white;
+	justify-content: center;
+	border-bottom: 1px solid #999;
+}
+
+.small {
+	display: grid;
+	grid-template-columns: auto 1fr 1fr;
+	/* background-color: beige; */
+	height: 60px;
+	grid-gap: 215px;
+	margin-top: 28px;
+}
+
+.a1 {
+	margin-top: 5px;
+}
+
+.a2 {
+	width: 200px;
+	height: 30px;
+}
+
+.small1 {
+	display: grid;
+	grid-template-columns: auto auto auto;
+}
+
+.line {
+	background-color: black;
+	height: 25px;
+	margin-top: 7px;
+	width: 1px;
+	margin-left: 15px;
+	margin-right: 10px;
+	/* margin: -35px 43px;  */
+}
+
+.small3 {
+	display: grid;
+	grid-template-columns: auto auto auto;
+	margin-left: 55px;
+	margin-top: 5px;
+}
+
+.a3 {
+	margin-top: 10px;
+	width: 100%;
+}
+
+.a5 {
+	margin-left: 10px;
+}
+
+input:focus {
+	outline: none;
+}
+
+.btn2 {
+	margin-top: 10px;
+	height: 31.3px;
+	width: 68.02px;
+	background-color: #3897F0;
+	border-radius: 5px;
+	border: 0px;
+	color: white;
+	text-align: center;
+	line-height: 31.3px;
 }
 </style>
 </head>
 
 <body>
 
-	<div class="upperbox1">
-		<div class="semibox">
-			<div class="upperbox2">
+	<div class="big">
+		<div class="small">
+			<div class="small1">
+				<div class="a0">
+					<a href="/images"><img src="/image/images/40.png" width="30px"
+						height="35px"></a>
+				</div>
+				<div class="line"></div>
+				<div class="a1">
+					<a href="/images"><img src="/image/images/logo.png"
+						width="100px" height="30px"></a>
+				</div>
+			</div>
+			<div class="small2">
+				<div class="a3">
+					<div>
+					<input class="a2 searchbox" type="text"
+						placeholder="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;검색">
+					<button class="btn2" onclick='search()'>검색</button>
+					</div>	
+				</div>
+			</div>
 
-				<div class="uppervalue1">
-					<div class="value1image1">
-						<img src="/image/user/icon.png" onclick="location.href='/images'">
-					</div>
-					<div class="value1image2"></div>
-					<div class="value1image3">
-						<img src="/image/user/instagram.png"
-							onclick="location.href='/images'">
-					</div>
+			<div class="small3">
+
+				<a href="/explore"><img src="/image/images/41.png" height="30px"></a>
+				<div class="a5">
+					<a href="#"><img src="/image/images/42.png" height="30px"></a>
 				</div>
 
-				<div class="uppervalue2">
-					<i class="material-icons">search</i>
-					<div class="value2image1">
-						<input class="value2image2" type="text" placeholder="검색" />
-					</div>
+				<div class="a5">
+					<a href="/user/${user.id}"><img src="/image/images/43.png"
+						height="30px"></a>
 				</div>
-
-				<div class="uppervalue3">
-					<div class="value1image1">
-						<a href="/explore"><img src="/image/images/41.png" /></a>
-					</div>
-					<div class="value1image1">
-						<a href="#"><img src="/image/images/42.png" /></a>
-					</div>
-					<div class="value1image1">
-						<a href="/user/${user.id}"><img src="/image/images/43.png" /></a>
-					</div>
-				</div>
-
 			</div>
 		</div>
+
 	</div>
 
 	<main class="body">
@@ -629,16 +700,16 @@ input[type=submit] {
 						<p>${imageCount}</p>
 					</div>
 					<a href="#" class="popup" onclick="followlist(false)"> 팔로워
-						<p>${followerCount}</p>
+						<p class="followerCount">${followerCount}</p>
 
 					</a> <a href="#" class="popup" onclick="followlist(true)"> 팔로우
-						<p>${followCount}</p>
+						<p class="followCount">${followCount}</p>
 					</a>
 				</div>
 				<div class="rower2">
 
-					<div class="rower3">${imageUser.name }↟</div>
-					${imageUser.bio } <br /> <a href="${imageUser.website }">${imageUser.website }</a>
+					<div class="rower3">${imageUser.name}</div>
+					${imageUser.bio} <br /> <a href="${imageUser.website }">${imageUser.website }</a>
 
 				</div>
 			</div>
@@ -709,6 +780,7 @@ input[type=submit] {
 	<!-- wrap 끝 -->
 
 	<script type="text/javascript">
+
 	function follow(check){
 		//true -> follow
 		//false -> unfollow
@@ -724,6 +796,14 @@ input[type=submit] {
 				if(rs === "ok"){
 					let follow_el = document.querySelector('.followCheck');
 					follow_el.innerHTML = "<button class='value3image2' onclick='follow(false)' >언팔로우</button>";
+					
+					let follower_c = document.querySelector('.followerCount');
+					
+					let followercount =follower_c.innerHTML;
+					followercount *=1;
+					followercount +=1;
+					follower_c.innerHTML = followercount;
+					
 				}
 			}
 					).catch();
@@ -739,18 +819,23 @@ input[type=submit] {
 				if(rs === "ok"){
 					let follow_el = document.querySelector('.followCheck');
 					follow_el.innerHTML = "<button class='value3image2' onclick='follow(true)' >팔로우</button>";
+					let follower_c = document.querySelector('.followerCount');
+					let followercount =follower_c.innerHTML;
+					followercount *=1;
+					followercount -=1;
+					follower_c.innerHTML = followercount;
+					
 				}
 			}
 					).catch();
 		}
+		 
 	}
 	
 	
 	
 	
-	</script>
-
-	<script type="text/javascript">
+	
 	function followlist(check){
 		
 		
@@ -759,7 +844,7 @@ input[type=submit] {
 		
 	
 		if(check){
-			let url = '/followlist/'+${user.id};
+			let url = '/followlist/'+${imageUser.id};
 			fetch(url, {
 				method:"GET"
 			}).then(function(res){
@@ -771,21 +856,28 @@ input[type=submit] {
 				let follow_el = document.querySelector('#pop');
 				for(let g in rs){
 				
-				
+					let filePath;
+					if(rs[g].toUser.profile === null){
+						filePath='/image/images/1212.png';
+					}else{
+						filePath=rs[g].toUser.profile.filePath;
+					}
 				
 				let follow =document.createElement("div")
 				follow.classList.add("img");
-				follow.innerHTML = "<img src='/image/img.jpg' alt='white'><p>"+rs[g].toUser.username+"</p><a class='follow"+rs[g].toUser.id+"'><button  class='un' onclick='follow2("+rs[g].toUser.id+", false)'>언팔</button></a>";
+				follow.innerHTML = "<a href=/user/"+rs[g].toUser.id+"><img src='"+filePath+"' alt='white' width='50px' height='50px' style='border-radius: 50%' onerror='this.src=\"/image/images/1212.png\"'><p>"+rs[g].toUser.username+"</p></a><a class='follow"+rs[g].toUser.id+"'><button  class='un' onclick='follow2("+rs[g].toUser.id+", false)'>언팔</button></a>";
+				if(rs[g].toUser.id !== ${user.id}){
 				follow_el.prepend(follow); 
+				}
 				
 				
 				}
-				
+			
 			}
 					).catch();
 			
 		}else{
-			let url = '/followerlist/'+${user.id};
+			let url = '/followerlist/'+${imageUser.id};
 			fetch(url, {
 				method:"GET"
 			}).then(function(res){
@@ -796,19 +888,25 @@ input[type=submit] {
 				
 				let follow_el = document.querySelector('#pop');
 				for(let g in rs){
-					
+					let filePath;
+					if(rs[g].fromUser.profile === null){
+						filePath='/image/images/1212.png';
+					}else{
+						filePath=rs[g].fromUser.profile.filePath;
+					}
 					
 					
 					let follow =document.createElement("div")
 					follow.classList.add("img");
 					if(rs[g].doFollowing === true){
-					follow.innerHTML = "<img src='/image/img.jpg' alt='white'><p>"+rs[g].fromUser.username+"</p><a class='follow"+rs[g].fromUser.id+"'><button onclick='follow2("+rs[g].fromUser.id+", true)'>팔로우</button></a>";
+					follow.innerHTML = "<a href=/user/"+rs[g].fromUser.id+"><img src='"+filePath+"' alt='white' width='50px' height='50px' style='border-radius: 50%' onerror='this.src=\"/image/images/1212.png\"'><p>"+rs[g].fromUser.username+"</p></a><a class='follow"+rs[g].fromUser.id+"'><button onclick='follow2("+rs[g].fromUser.id+")'>팔로우</button></a>";
 					}else{
-					follow.innerHTML = "<img src='/image/img.jpg' alt='white'><p>"+rs[g].toUser.username+"</p><a class='follow"+rs[g].toUser.id+"'><button  class='un' onclick='follow2("+rs[g].toUser.id+", false)'>언팔</button></a>";						
+					follow.innerHTML = "<a href=/user/"+rs[g].fromUser.id+"><img src='"+filePath+"' alt='white' width='50px' height='50px' style='border-radius: 50%' onerror='this.src=\"/image/images/1212.png\"'><p>"+rs[g].fromUser.username+"</p></a><a class='follow"+rs[g].fromUser.id+"'><button  class='un' onclick='follow2("+rs[g].fromUser.id+")'>언팔</button></a>";						
 					}
+					if(rs[g].fromUser.id !== ${user.id}){
 					follow_el.prepend(follow); 
-					
 					}
+				}
 				
 			}
 					).catch();
@@ -820,7 +918,7 @@ input[type=submit] {
 	function follow2(id,check){
 		//true -> follow
 		//false -> unfollow
-		
+		//type -> follow = true, follower= false
 		if(check){
 			let url = '/follow/'+id;
 			fetch(url, {
@@ -832,6 +930,14 @@ input[type=submit] {
 				if(rs === "ok"){
 					let follow_el = document.querySelector('.follow'+id);
 					follow_el.innerHTML = "<button class='un' onclick='follow2("+id+", false)'>언팔</button>";
+					if(${imageUser.id eq user.id}){
+						
+							let follow_c = document.querySelector('.followCount');
+							let followcount =follow_c.innerHTML;
+							followcount *=1;
+							followcount +=1;
+							follow_c.innerHTML = followcount;
+					}
 				}
 			}
 					).catch();
@@ -847,16 +953,32 @@ input[type=submit] {
 				if(rs === "ok"){
 					let follow_el = document.querySelector('.follow'+id);
 					follow_el.innerHTML = "<button onclick='follow2("+id+", true)'>팔로우</button>";
+					if(${imageUser.id eq user.id}){
+							let follow_c = document.querySelector('.followCount');
+							let followcount =follow_c.innerHTML;
+							followcount *=1;
+							followcount -=1;
+							follow_c.innerHTML = followcount;
+					}
 				}
 			}
 					).catch();
 		}
+		
 	}
 	
 	
 	</script>
 	<script src="/js/script.js" type="text/javascript"></script>
-
+	<script type="text/javascript">
+function search(){
+	let search_dom = document.querySelector('.searchbox');
+	let search_value =search_dom.value;
+	if(search_value != null){
+		location.href="/images?search="+search_value;	
+	}	
+}
+</script>
 </body>
 
 </html>

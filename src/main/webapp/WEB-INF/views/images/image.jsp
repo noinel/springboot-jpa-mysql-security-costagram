@@ -8,8 +8,8 @@
 <meta charset="UTF-8">
 <title>Instagram</title>
 <link rel="shortcut icon" href="/image/user/favicon.ico">
-<link href="css/style.css" type="text/css" rel="stylesheet">
-<script src="js/jquery-1.12.3.js" type="text/javascript"></script>
+<link href="/css/style.css" type="text/css" rel="stylesheet">
+<script src="/js/jquery-1.12.3.js" type="text/javascript"></script>
 <style>
 * {
 	padding: 0;
@@ -57,6 +57,7 @@
 	margin-top: 5px;
 }
 .a3 {
+	width: 100%;
 	margin-top: 10px;
 }
 .a5 {
@@ -251,6 +252,30 @@ input[type=button]{
 .like_people {
 	display: inline-block;
 }
+.btn{
+			margin-top: 10px;
+            height: 31.3px;
+            width: 268.02px;
+            background-color: #3897F0;
+            border-radius: 5px;
+            border: 0px;
+            color: white;
+            text-align: center;
+            line-height: 31.3px;
+            grid-column: 1/3 span;
+
+        }
+        .btn2{
+			margin-top: 10px;
+            height: 31.3px;
+            width: 68.02px;
+            background-color: #3897F0;
+            border-radius: 5px;
+            border: 0px;
+            color: white;
+            text-align: center;
+            line-height: 31.3px;
+		}
 </style>
 </head>
 
@@ -270,8 +295,12 @@ input[type=button]{
 			</div>
 			<div class="small2">
 				<div class="a3">
-					<input class="a2" type="text"
+					<div>
+					
+					<input class="a2 searchbox" type="text"
 						placeholder="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;검색">
+					<button class="btn2" onclick='search()'>검색</button>
+					</div>	
 				</div>
 			</div>
 
@@ -300,7 +329,7 @@ input[type=button]{
 					<div class="image-header">
 						<div class="b1">
 							<div class="profile">
-								<a href="#"><img src="/image/images/44.jpg"></a>
+								<a href="#"><img  width="50px" height="50px" style="border-radius: 50%" src="${image.user.profile.filePath}" onerror="this.src='/image/images/1212.png'"></a>
 							</div>
 							<div class="info">
 								<div class="username">
@@ -380,8 +409,17 @@ input[type=button]{
 
 					</div>
 					<div class="f">
-						<input class="g" type="text" placeholder="댓글 달기" /><a class="h"
+						<input class="g reply${image.id}" type="text" placeholder="댓글 달기" /><a onclick="replyadd(reply${image.id})" class="h"
 							href="#">게시</a>
+						<c:forEach var="reply" items="${image.replys}">
+						
+							<div>${reply.user.username}</div>
+							<div>${reply.content}</div>
+							
+						
+						</c:forEach>	
+							
+						
 					</div>
 
 				</div>
@@ -397,11 +435,11 @@ input[type=button]{
 			<div class="small2-1">
 
 				<div>
-					<a href="#" class="popup" onclick="followlist(true)"><img src="/image/images/61.png"
-						alt="x" width="50px" height="50px" /></a>
+					<a href="#" class="popup" onclick="followlist(true)"><img src="${user.profile.filePath}"
+						alt="x" width="50px" height="50px" style="border-radius: 50%" onerror="this.src='/image/images/1212.png'"/></a>
 				</div>
 				<div class="ax">
-					<a class="bx2" href="#">${user.username}</a>
+					<a class="bx2" href="#">${user.username}</a>	
 				</div>
 
 
@@ -492,7 +530,7 @@ input[type=button]{
 					</div>
 
 				</div>
-
+				<a href="/logout" class="btn btn-primary-inline">로그아웃</a>
 				
 				<div class="ax12">
 					<a class="ax13" href="#">instagram 정보.지원.홍보 센터.API,채용정보<br />
@@ -528,10 +566,13 @@ input[type=button]{
 
 	<script>
 		function paging(){
-			if(${maxPage} == ${page}){
+				
+			if(${maxPage} == ${page} || ${maxPage} == 0){
 				alert("마지막 페이지입니다");
+			}else if(${search ne null}){
+				location.href="/images?page="+${page+1}+"&search=${search}";	
 			}else{
-				location.href="/images?page="+${page+1};	
+				location.href="/images?page="+${page+1};
 			}	
 		}
 		
@@ -544,7 +585,7 @@ input[type=button]{
 				}).then(function(result){
 					//하트 없애기
 					let el = document.querySelector('.c__1'+imageId);
-					el.innerHTML = "<img src='/image/images/49_unlike.png' onclick='like("+imageId+","+(count-1)+", 1)' height='30px' />";
+					el.innerHTML = "<img src='/image/images/49_unlike.png'  onclick='like("+imageId+","+(count-1)+", 1)' height='30px' />";
 					
 					//좋아요 개수
 					let el2 = document.querySelector('.like'+imageId);
@@ -607,11 +648,16 @@ input[type=button]{
 				let follow_el = document.querySelector('#pop');
 				for(let g in rs){
 				
-				
+				let filePath;
+				if(rs[g].toUser.profile === null){
+					filePath='/image/images/1212.png';
+				}else{
+					filePath=rs[g].toUser.profile.filePath;
+				}
 				
 				let follow =document.createElement("div")
 				follow.classList.add("img");
-				follow.innerHTML = "<img src='/image/img.jpg' alt='white'><p>"+rs[g].toUser.username+"</p><a class='follow"+rs[g].toUser.id+"'><button  class='un' onclick='follow2("+rs[g].toUser.id+", false)'>언팔</button></a>";
+				follow.innerHTML = "<a href=/user/"+rs[g].toUser.id+"><img src='"+filePath+"' alt='white'  width='50px' height='50px' style='border-radius: 50%' onerror='this.src=\"/image/images/1212.png\"'><p>"+rs[g].toUser.username+"</p></a><a class='follow"+rs[g].toUser.id+"'><button  class='un' onclick='follow2("+rs[g].toUser.id+", false)'>언팔</button></a>";
 				follow_el.prepend(follow); 
 				
 				
@@ -621,33 +667,7 @@ input[type=button]{
 					).catch();
 			
 		}else{
-			let url = '/followerlist/'+${user.id};
-			fetch(url, {
-				method:"GET"
-			}).then(function(res){
-				console.log(res);
-				return res.json();
-			}).then(function(rs){
-				
-				
-				let follow_el = document.querySelector('#pop');
-				for(let g in rs){
-					
-					
-					
-					let follow =document.createElement("div")
-					follow.classList.add("img");
-					if(rs[g].doFollowing === true){
-					follow.innerHTML = "<img src='/image/img.jpg' alt='white'><p>"+rs[g].fromUser.username+"</p><a class='follow"+rs[g].fromUser.id+"'><button onclick='follow2("+rs[g].fromUser.id+", true)'>팔로우</button></a>";
-					}else{
-					follow.innerHTML = "<img src='/image/img.jpg' alt='white'><p>"+rs[g].toUser.username+"</p><a class='follow"+rs[g].toUser.id+"'><button  class='un' onclick='follow2("+rs[g].toUser.id+", false)'>언팔</button></a>";						
-					}
-					follow_el.prepend(follow); 
-					
-					}
-				
-			}
-					).catch();
+			
 		}
 		
 			
@@ -689,7 +709,23 @@ input[type=button]{
 		}
 	}
 	
-	
+	function search(){
+		let search_dom = document.querySelector('.searchbox');
+		let search_value =search_dom.value;
+		if(search_value != null){
+			location.href="/images?search="+search_value;	
+		}
+		
+		
+	}
+	function replyadd(classname){
+		let reply = document.querySelector('.'+classname);
+		let Url = '/reply/create'
+		fetch(Url,{
+			
+		}).then().then().catch();
+		
+	}
 	</script>
 	<script src="/js/script.js" type="text/javascript"></script>
 

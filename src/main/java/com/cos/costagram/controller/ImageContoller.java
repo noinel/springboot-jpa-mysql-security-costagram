@@ -7,9 +7,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,11 +21,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cos.costagram.model.Follow;
 import com.cos.costagram.model.Image;
+import com.cos.costagram.model.ProfileImage;
 import com.cos.costagram.model.Tag;
 import com.cos.costagram.model.User;
 import com.cos.costagram.repository.FollowRepository;
 import com.cos.costagram.repository.ImageRepository;
+import com.cos.costagram.repository.ProfileImageRepository;
 import com.cos.costagram.repository.TagRepository;
+import com.cos.costagram.repository.UserRepository;
 import com.cos.costagram.service.CustomUserDetails;
 import com.cos.costagram.util.UtilCos;
 
@@ -35,6 +37,11 @@ public class ImageContoller {
 
 	@Autowired
 	private ImageRepository imageRepository;
+	@Autowired
+	private ProfileImageRepository pImageRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 
 	@Autowired
 	private TagRepository tagRepository;
@@ -44,25 +51,79 @@ public class ImageContoller {
 
 	@GetMapping("/home")
 	public String home() {
+		
 		return "home";
+		
 	}
 
 	@GetMapping("/images")
 	public String image(@AuthenticationPrincipal CustomUserDetails userDetail, Model model,
-			@RequestParam(value = "page", defaultValue = "1") int page, HttpServletRequest request) {
-
+			@RequestParam(value = "page", defaultValue = "1") int page, @RequestParam(value = "search", defaultValue = "") String search) {
+		
 		// 1. User (One)
-		User user = userDetail.getUser();
-		System.out.println("user.getId() : " + user.getId());
+		Optional<User> userO = userRepository.findById(userDetail.getUser().getId());
+		User user = null;
+		if(userO.isPresent()) {
+		 user = userO.get();
+		}
+				
+		
+		
+		if(!search.equals("")) {
+			System.out.println(search);
+			List<Image> tagImageList= new ArrayList<Image>();
+			List<Tag> tags = tagRepository.findByNameContaining(search);
+			System.out.println(search+tags.size());
+			for(Tag tag: tags) {
+				
+			tagImageList.add(tag.getImage());
+			}
+			int maxPage = 0;
+			int start = (page - 1) * 3;
+			int end = page * 3;
+			int mod = tagImageList.size() % 3; // 0
+			if (mod == 0) {
+				maxPage = tagImageList.size() / 3; // 2
+			} else {
+				maxPage = tagImageList.size() / 3 + 1;
 
+				if (page == maxPage) {
+					end = start + mod;
+				}
+			}
+
+			for (Image i : tagImageList) {
+				System.out.println(i.getId());
+			}
+			System.out.println("=================");
+
+			Collections.sort(tagImageList);
+
+			for (Image i : tagImageList) {
+				System.out.println(i.getId());
+			}
+			if(tagImageList.size() > 3) {
+			tagImageList = tagImageList.subList(start, end); // 0 3
+			}
+			
+			model.addAttribute("user", user);
+			model.addAttribute("imageList", tagImageList);
+			model.addAttribute("page", page);
+			model.addAttribute("maxPage", maxPage);
+			model.addAttribute("search", search);
+			
+			return "/images/image";
+			
+		}
+		
 		// HttpSession session = request.getSession();
 		// session.setAttribute("user", user);
 		// 2. User:Follow (List)
 		List<Follow> followList = followRepository.findByFromUserId(user.getId());
-
+		
 		// 3. User:Follow:Image (List) 4. Follow:Image:Like(count) (One)
 		List<Image> imageList = new ArrayList<>();
-
+		
 		for (Follow f : followList) {
 			List<Image> list = imageRepository.findByUserIdOrderByCreateDateDesc(f.getToUser().getId());
 			for (Image i : list) {
@@ -106,6 +167,8 @@ public class ImageContoller {
 
 		return "/images/image";
 	}
+	
+	
 
 	@PostMapping("/images/uploadProc")
 	public String imageUpload(@AuthenticationPrincipal CustomUserDetails userDetail,
@@ -141,5 +204,45 @@ public class ImageContoller {
 	@GetMapping("/images/upload")
 	public String imageUpload() {
 		return "/images/upload";
+	}
+	
+	@PostMapping("/profileimages/uploadProc")
+	public String profileImageUpload(@AuthenticationPrincipal CustomUserDetails userDetail,
+			@RequestParam("file") MultipartFile file) throws IOException {
+		
+		UUID uuid = UUID.randomUUID();
+		String uuidFileName;
+		
+		User user = userDetail.getUser();
+		
+		
+		Optional<ProfileImage> prevProfileO = pImageRepository.findByUser(user);
+		if(prevProfileO.isPresent()) {
+			System.out.println("true");
+			
+			uuidFileName = prevProfileO.get().getFileName();
+			Path filePath = Paths.get(UtilCos.getResourcePath() + uuidFileName);
+			Files.write(filePath, file.getBytes());
+			System.out.println(filePath);
+			return "redirect:/user/edit";
+		}else {
+			
+			uuidFileName = uuid + "_" + file.getOriginalFilename();
+			Path filePath = Paths.get(UtilCos.getResourcePath() + uuidFileName);
+			Files.write(filePath, file.getBytes());
+			
+			ProfileImage pimage = ProfileImage.builder().user(user).mimeType(file.getContentType())
+					.fileName(uuidFileName).filePath("/image/" + uuidFileName).build();
+			pImageRepository.save(pimage);
+			System.out.println(filePath);
+			return "redirect:/user/edit";
+			
+		}
+		
+	}
+
+	@GetMapping("/profileimages/upload")
+	public String profileImageUpload() {
+		return "/images/profileupload";
 	}
 }
