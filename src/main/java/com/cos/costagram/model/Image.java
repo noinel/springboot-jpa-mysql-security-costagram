@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -46,6 +47,7 @@ public class Image implements Comparable<Image>{
 	private User user;
 	
 	@OneToMany(mappedBy = "image")
+	@OrderBy("id desc")
 	@JsonManagedReference
 	@Builder.Default private List<Reply> replys = new ArrayList<>();
 	
