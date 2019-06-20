@@ -276,6 +276,10 @@ input[type=button]{
             text-align: center;
             line-height: 31.3px;
 		}
+		.grid{
+			display:grid;
+			grid-template-columns: 1fr 7fr;
+		}
 </style>
 </head>
 
@@ -329,7 +333,7 @@ input[type=button]{
 					<div class="image-header">
 						<div class="b1">
 							<div class="profile">
-								<a href="#"><img  width="50px" height="50px" style="border-radius: 50%" src="${image.user.profile.filePath}" onerror="this.src='/image/images/1212.png'"></a>
+								<a href="/user/${image.user.id}"><img  width="50px" height="50px" style="border-radius: 50%" src="${image.user.profile.filePath}" onerror="this.src='/image/images/1212.png'"></a>
 							</div>
 							<div class="info">
 								<div class="username">
@@ -409,18 +413,20 @@ input[type=button]{
 
 					</div>
 					<div class="f">
-						<input class="g reply${image.id}" type="text" placeholder="댓글 달기" /><a onclick="replyadd(reply${image.id})" class="h"
-							href="#">게시</a>
-						<c:forEach var="reply" items="${image.replys}">
-						
-							<div>${reply.user.username}</div>
-							<div>${reply.content}</div>
-							
-						
-						</c:forEach>	
-							
-						
+						<input class="g reply${image.id}" type="text" placeholder="댓글 달기" /><button onclick="replyadd(${image.id})" class="h">게시</button>
 					</div>
+					<div class="replycase${image.id}">
+					<c:forEach var="reply" items="${image.replys}">
+							<div class="grid reply_${reply.id}">
+							<a href="/user/${reply.user.id}"><img  width="50px" height="50px" style="border-radius: 50%" src="${reply.user.profile.filePath}" onerror="this.src='/image/images/1212.png'"></a>
+								<div class="replymain">
+									<div><p>${reply.user.username}</p></div>
+									<div><b>${reply.content}</b></div>
+								</div>
+							</div>
+							<hr/>
+						</c:forEach>	
+						</div>
 
 				</div>
 				<!--  end of item1 -->
@@ -448,42 +454,18 @@ input[type=button]{
 					<div class="ax2">
 						<a class="ax3" href="#">모두 보기</a>
 					</div>
-
+					<c:forEach var="image" items="${recent}">
 					<div class="ax4">
-						<a href="#"><img src="/image/images/61.png" alt="x"
-							width="50px" height="50px" /></a>
+						<a href="/user/${image.user.id}"  ><img src="${image.filePath}"
+						alt="x" width="50px" height="50px"  onerror="this.src='/image/images/1212.png'"/></a>
 					</div>
 
 					<div class="ax5">
-						<span class="bx1"><a class="bx2" href="#">white</a></span>
+						<p class="bx1"><a class="bx2" href="/user/${image.user.id}">${image.user.username}</a></p>
+						<p class="bx1"><a class="bx2" href="/user/${image.user.id}">${image.caption}</a></p>
 					</div>
-
-					<div class="ax4">
-						<a href="#"><img src="/image/images/61.png" alt="x"
-							width="50px" height="50px" /></a>
-					</div>
-
-					<div class="ax5">
-						<span class="bx1"><a class="bx2" href="#">white</a></span>
-					</div>
-
-					<div class="ax4">
-						<a href="#"><img src="/image/images/61.png" alt="x"
-							width="50px" height="50px" /></a>
-					</div>
-
-					<div class="ax5">
-						<span class="bx1"><a class="bx2" href="#">white</a></span>
-					</div>
-
-					<div class="ax4">
-						<a href="#"><img src="/image/images/61.png" alt="x"
-							width="50px" height="50px" /></a>
-					</div>
-
-					<div class="ax5">
-						<span class="bx1"><a class="bx2" href="#">white</a></span>
-					</div>
+					</c:forEach>
+					
 
 				</div>
 				
@@ -493,41 +475,17 @@ input[type=button]{
 						<a class="ax3" href="#">모두 보기</a>
 					</div>
 
+					<c:forEach var="image" items="${hot}">
 					<div class="ax4">
-						<a href="#"><img src="/image/images/61.png" alt="x"
-							width="50px" height="50px" /></a>
+						<a href="/user/${image.user.id}"  ><img src="${image.filePath}"
+						alt="x" width="50px" height="50px"  onerror="this.src='/image/images/1212.png'"/></a>
 					</div>
 
 					<div class="ax5">
-						<span class="bx1"><a class="bx2" href="#">white</a></span>
+						<p class="bx1"><a class="bx2" href="/user/${image.user.id}">${image.user.username}</a></p>
+						<p class="bx1"><a class="bx2" href="/user/${image.user.id}">${image.caption}</a></p>
 					</div>
-
-					<div class="ax4">
-						<a href="#"><img src="/image/images/61.png" alt="x"
-							width="50px" height="50px" /></a>
-					</div>
-
-					<div class="ax5">
-						<span class="bx1"><a class="bx2" href="#">white</a></span>
-					</div>
-
-					<div class="ax4">
-						<a href="#"><img src="/image/images/61.png" alt="x"
-							width="50px" height="50px" /></a>
-					</div>
-
-					<div class="ax5">
-						<span class="bx1"><a class="bx2" href="#">white</a></span>
-					</div>
-
-					<div class="ax4">
-						<a href="#"><img src="/image/images/61.png" alt="x"
-							width="50px" height="50px" /></a>
-					</div>
-
-					<div class="ax5">
-						<span class="bx1"><a class="bx2" href="#">white</a></span>
-					</div>
+					</c:forEach>
 
 				</div>
 				<a href="/logout" class="btn btn-primary-inline">로그아웃</a>
@@ -718,14 +676,44 @@ input[type=button]{
 		
 		
 	}
-	function replyadd(classname){
-		let reply = document.querySelector('.'+classname);
-		let Url = '/reply/create'
-		fetch(Url,{
-			
-		}).then().then().catch();
+	function replyadd(imageid){
+		let reply = document.querySelector('.reply'+imageid);
+		let reply_value = reply.value;
+		if(reply_value != null){
+		let data = {
+			content: reply_value,
+			image: { id: imageid },
+		}
+		let Url = '/reply/create';
 		
+		fetch(Url,{
+			headers:{'Content-Type': 'application/json'},
+				method:"POST",
+				body: JSON.stringify(data),
+			}).then(function(res){
+				
+				return res.json();
+			}).then(function(rs){
+				reply.value="";
+				let replycase = document.querySelector('.replycase'+imageid);
+				let replybox =  document.createElement("div");
+				let hr = document.createElement("hr");
+				if(rs.user.profile === null){
+					filePath='/image/images/1212.png';
+				}else{
+					filePath=rs.user.profile.filePath;
+				}
+				replybox.className ="grid reply_"+rs.id;
+				replybox.innerHTML = '<a href="/user/'+rs.user.id+'"><img  width="50px" height="50px" style="border-radius: 50%" src="'+filePath+'" onerror="this.src=\'/image/images/1212.png\'"></a><div class="replymain"><div><p>'+rs.user.username+'</p></div><div><b>'+rs.content+'</b></div></div>';
+				replycase.prepend(hr);
+				replycase.prepend(replybox);
+				
+	})
+		}
 	}
+	
+	
+	
 	</script>
 	<script src="/js/script.js" type="text/javascript"></script>
 

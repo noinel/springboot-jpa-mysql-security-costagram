@@ -406,7 +406,7 @@ input:focus {
     <div class="article">
             <div class="text">둘러보기</div>
         <c:forEach var='image' items='${imageList}'>
-        <div class="articleimg1"><a href="/user/${image.user.id}"><div class="imagetext1 image${image.user.id}">❤${image.likes.size()} 🗨1</div><img src="${image.filePath }" alt="" width="100%" height="100%" /></a></div>
+        <div class="articleimg1"><a href="/user/${image.user.id}"><div class="imagetext1 image${image.user.id}">❤${image.likes.size()} 🗨 ${image.replys.size()}</div><img src="${image.filePath }" alt="" width="100%" height="100%" /></a></div>
         </c:forEach>
         
       

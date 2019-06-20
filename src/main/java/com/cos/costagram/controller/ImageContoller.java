@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -60,13 +61,22 @@ public class ImageContoller {
 	public String image(@AuthenticationPrincipal CustomUserDetails userDetail, Model model,
 			@RequestParam(value = "page", defaultValue = "1") int page, @RequestParam(value = "search", defaultValue = "") String search) {
 		
+		
+		
 		// 1. User (One)
 		Optional<User> userO = userRepository.findById(userDetail.getUser().getId());
 		User user = null;
 		if(userO.isPresent()) {
 		 user = userO.get();
+		}else {
+			user= userDetail.getUser();
 		}
-				
+		List<Image> recentImages = imageRepository.findByUserIdNot(user.getId());
+		if(recentImages.size() > 6) {
+			recentImages = recentImages.subList(0, 6); // 0 6
+			}
+		
+		List<Image> hotImages = imageRepository.findHotImage(6);
 		
 		
 		if(!search.equals("")) {
@@ -108,6 +118,8 @@ public class ImageContoller {
 			
 			model.addAttribute("user", user);
 			model.addAttribute("imageList", tagImageList);
+			model.addAttribute("recent", recentImages);
+			model.addAttribute("hot", hotImages);
 			model.addAttribute("page", page);
 			model.addAttribute("maxPage", maxPage);
 			model.addAttribute("search", search);
@@ -164,6 +176,8 @@ public class ImageContoller {
 		model.addAttribute("imageList", imageList);
 		model.addAttribute("page", page);
 		model.addAttribute("maxPage", maxPage);
+		model.addAttribute("recent", recentImages);
+		model.addAttribute("hot", hotImages);
 
 		return "/images/image";
 	}
@@ -220,10 +234,12 @@ public class ImageContoller {
 		if(prevProfileO.isPresent()) {
 			System.out.println("true");
 			
-			uuidFileName = prevProfileO.get().getFileName();
+			uuidFileName = uuid + "_" + file.getOriginalFilename();
 			Path filePath = Paths.get(UtilCos.getResourcePath() + uuidFileName);
 			Files.write(filePath, file.getBytes());
-			System.out.println(filePath);
+			ProfileImage pimage = ProfileImage.builder().id(prevProfileO.get().getId()).user(user).mimeType(file.getContentType())
+					.fileName(uuidFileName).filePath("/image/" + uuidFileName).createDate(prevProfileO.get().getCreateDate()).updateDate(LocalDate.now()).build();
+			pImageRepository.save(pimage);
 			return "redirect:/user/edit";
 		}else {
 			
@@ -234,7 +250,7 @@ public class ImageContoller {
 			ProfileImage pimage = ProfileImage.builder().user(user).mimeType(file.getContentType())
 					.fileName(uuidFileName).filePath("/image/" + uuidFileName).build();
 			pImageRepository.save(pimage);
-			System.out.println(filePath);
+			System.out.println(pimage);
 			return "redirect:/user/edit";
 			
 		}

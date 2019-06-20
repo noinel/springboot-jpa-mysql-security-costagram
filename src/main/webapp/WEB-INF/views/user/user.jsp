@@ -899,9 +899,9 @@ input:focus {
 					let follow =document.createElement("div")
 					follow.classList.add("img");
 					if(rs[g].doFollowing === true){
-					follow.innerHTML = "<a href=/user/"+rs[g].fromUser.id+"><img src='"+filePath+"' alt='white' width='50px' height='50px' style='border-radius: 50%' onerror='this.src=\"/image/images/1212.png\"'><p>"+rs[g].fromUser.username+"</p></a><a class='follow"+rs[g].fromUser.id+"'><button onclick='follow2("+rs[g].fromUser.id+")'>팔로우</button></a>";
+					follow.innerHTML = "<a href=/user/"+rs[g].fromUser.id+"><img src='"+filePath+"' alt='white' width='50px' height='50px' style='border-radius: 50%' onerror='this.src=\"/image/images/1212.png\"'><p>"+rs[g].fromUser.username+"</p></a><a class='follow"+rs[g].fromUser.id+"'><button onclick='follow2("+rs[g].fromUser.id+", true)'>팔로우</button></a>";
 					}else{
-					follow.innerHTML = "<a href=/user/"+rs[g].fromUser.id+"><img src='"+filePath+"' alt='white' width='50px' height='50px' style='border-radius: 50%' onerror='this.src=\"/image/images/1212.png\"'><p>"+rs[g].fromUser.username+"</p></a><a class='follow"+rs[g].fromUser.id+"'><button  class='un' onclick='follow2("+rs[g].fromUser.id+")'>언팔</button></a>";						
+					follow.innerHTML = "<a href=/user/"+rs[g].fromUser.id+"><img src='"+filePath+"' alt='white' width='50px' height='50px' style='border-radius: 50%' onerror='this.src=\"/image/images/1212.png\"'><p>"+rs[g].fromUser.username+"</p></a><a class='follow"+rs[g].fromUser.id+"'><button  class='un' onclick='follow2("+rs[g].fromUser.id+",false)'>언팔</button></a>";						
 					}
 					if(rs[g].fromUser.id !== ${user.id}){
 					follow_el.prepend(follow); 

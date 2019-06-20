@@ -33,7 +33,8 @@ public class ReplyController {
 	
 	
 	@PostMapping("/create")
-	public @ResponseBody User create(@AuthenticationPrincipal CustomUserDetails userDetail, @RequestBody Reply reply) {
+	public @ResponseBody Reply create(@AuthenticationPrincipal CustomUserDetails userDetail, @RequestBody Reply reply) {
+		System.out.println(reply);
 		Optional<User> userO= userRepository.findById(userDetail.getUser().getId());
 		User user = new User();
 		if(userO.isPresent()) {
@@ -49,8 +50,8 @@ public class ReplyController {
 		
 		
 		
-		replyRepository.save(reply);
-			return null;
+		Reply result = replyRepository.save(reply);
+			return result;
 	}
 
 }

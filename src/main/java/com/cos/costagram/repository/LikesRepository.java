@@ -15,4 +15,5 @@ public interface LikesRepository extends JpaRepository<Likes, Integer>{
 	@Transactional
 	@Query(value="delete from likes where imageId = ?1 and userId = ?2", nativeQuery=true)
 	public void deleteLike(int imageId, int userId);
+	
 }
